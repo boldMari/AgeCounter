@@ -2,7 +2,7 @@
   <html>
   <head>
   <meta charset="utf-8">
-  <title>Sofia and her milestones</title>
+  <title>Age calculator</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,10 +13,19 @@
   <link rel="stylesheet" href="age-counter.css">
   </head>
   <body>
-    <div>
+    <div class="main-content">
       <div>
         <h1>Age calculator</h1>
       </div>
+      <div>
+        <h2>Your Birth Date</h2>
+          <label for="birthdate">Enter your birthdate:</label>
+          <input type="date" id="birthdate">
+          <br><br>
+          <button onclick="calculateAge()">Calculate Age</button>
+          <div id="result"></div>
+      </div>
+
     </div>
         <script src="age-counter.js"></script>
   </body>
