@@ -1,9 +1,9 @@
-https://boldmari.github.io/AgeCounter/
-
 Age Counter Project
 ==================
 
 The Age Counter project is a web application that calculates a person's age in years, months, and days based on their birthdate. This documentation provides an overview of the project, its features, usage instructions, technical details, and more.
+
+[Let's get calculating!](https://boldmari.github.io/AgeCounter/)
 
 Table of Contents
 -----------------
