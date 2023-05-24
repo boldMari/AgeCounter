@@ -12,14 +12,14 @@ function calculateDays(start, end) {
 
 function getMilestone(age) {
 	var milestoneRanges = {
-		0: "Newborn",
-		1: "Infant",
-		2: "Toddler",
-		4: "Child",
-		13: "Teenager",
-		20: "Young Adult",
-		40: "Adult",
-		65: "Senior",
+		0: "Newborn.",
+		1: "Infant.",
+		2: "Toddler.",
+		4: "Child.",
+		13: "Teenager.",
+		20: "Young Adult.",
+		40: "Adult.",
+		65: "Senior.",
 	};
 
 	var milestone = "Unknown";
@@ -35,6 +35,51 @@ function getMilestone(age) {
 	return milestone;
 }
 
+function animateNumber(targetNumber, duration) {
+	const startingNumber = 0;
+	const startTime = performance.now();
+	const numberElement = document.getElementById(targetNumber);
+	const numberElementValue = parseInt(numberElement.textContent, 10);
+
+	function updateNumber(currentTime) {
+		const elapsedTime = currentTime - startTime;
+		if (elapsedTime >= duration) {
+			// Animation finished
+			numberElement.textContent = numberElementValue;
+			return;
+		}
+
+		const progress = elapsedTime / duration;
+		const logarithmicProgress = 1 - Math.pow(1 - progress, 4); // Adjust the power (4) for desired effect
+		const currentNumber = Math.round(startingNumber + (numberElementValue - startingNumber) * logarithmicProgress);
+
+		numberElement.textContent = currentNumber;
+
+		// Request the next animation frame
+		requestAnimationFrame(updateNumber);
+	}
+
+	// Start the animation
+	requestAnimationFrame(updateNumber);
+}
+
+/*
+function animateAge(ageInDays) {
+	let count = 0;
+	const duration = 2000; // Animation duration in milliseconds
+	const base = 2; // Exponential base
+  
+	const timer = setInterval(() => {
+		if (count >= ageInDays) {
+			clearInterval(timer);
+			return;
+		}
+		count = Math.pow(base, count);
+		document.getElementById('resultDays').textContent = count;
+	}, duration / ageInDays);
+}
+*/
+
 function printResults(years, months, days, ageInDays) {
 	document.getElementById("result").innerHTML =
 		"Your age is " +
@@ -43,9 +88,19 @@ function printResults(years, months, days, ageInDays) {
 		months +
 		" months, and " +
 		days +
-		" days. (Approximately " +
-		ageInDays +
-		" days)." + "Your milestone is: " + getMilestone(years);
+		" days.";
+	document.getElementById("ageResultDays").innerHTML = ageInDays;
+	showElement("ageResult");
+	document.getElementById("milestones").innerHTML =
+		"Your milestone is: " + getMilestone(years);
+	
+}
+
+function showElement(elementId) {
+  var element = document.getElementById(elementId);
+  if (element) {
+    element.style.display = "block";
+  }
 }
 
 function calculateAge() {
@@ -78,8 +133,9 @@ function calculateAge() {
 	// Calculate the age in days by considering varying month lengths
 	var ageInDays = calculateDays(birthdate, now);
 
-	printResults(years, months,days,ageInDays);		
 
+	printResults(years, months, days, ageInDays);
+	animateNumber("ageResultDays", 3000);
 }
 
 document.querySelector("form").addEventListener("submit", function (event) {
@@ -87,50 +143,4 @@ document.querySelector("form").addEventListener("submit", function (event) {
 	calculateAge();
 });
 
-/*function getAge(dateString) {
-	var today = new Date();
-	var birthDate = new Date(dateString);
-	var years = today.getFullYear() - birthDate.getFullYear();
-	var months = today.getMonth() - birthDate.getMonth();
-	var days = today.getDate() - birthDate.getDate();
-	var ageMessage = "";
 
-	// Calculate milestone age ranges
-	var milestoneRanges = [
-		{ milestone: "Newborn", minAge: 0, maxAge: 1 },
-		{ milestone: "Infant", minAge: 1, maxAge: 2 },
-		{ milestone: "Toddler", minAge: 2, maxAge: 4 },
-		{ milestone: "Child", minAge: 4, maxAge: 13 },
-		{ milestone: "Teenager", minAge: 13, maxAge: 20 },
-		{ milestone: "Young Adult", minAge: 20, maxAge: 40 },
-		{ milestone: "Adult", minAge: 40, maxAge: 65 },
-		{ milestone: "Senior", minAge: 65, maxAge: Infinity },
-	];
-
-	// Find the corresponding milestone for the age range
-	for (var i = 0; i < milestoneRanges.length; i++) {
-		var milestoneRange = milestoneRanges[i];
-		if (years >= milestoneRange.minAge && years < milestoneRange.maxAge) {
-			ageMessage = milestoneRange.milestone;
-			break;
-		}
-	}
-
-	return {
-		years: years,
-		months: months,
-		days: days,
-		milestone: ageMessage,
-	};
-}
-
-document.querySelector("form").addEventListener("submit", function(event) {
-			event.preventDefault();
-			var birthdate = document.getElementById("birthdate").value;
-			var age = getAge(birthdate);
-			var ageResult = document.getElementById("ageResult");
-			calculateAge();
-			//ageResult.innerHTML = "You are " + age.years + " years old. Your milestone is: " + age.milestone;
-		});
-
-*/
