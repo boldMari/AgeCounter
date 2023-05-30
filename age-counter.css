@@ -39,3 +39,7 @@ input[type="date"]:focus {
 #ageResult {
 	display: none;
 }
+
+.milestones-ranges {
+	display: none;
+}

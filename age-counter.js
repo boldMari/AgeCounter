@@ -12,14 +12,14 @@ function calculateDays(start, end) {
 
 function getMilestone(age) {
 	var milestoneRanges = {
-		0: "Newborn.",
-		1: "Infant.",
-		2: "Toddler.",
-		4: "Child.",
-		13: "Teenager.",
-		20: "Young Adult.",
-		40: "Adult.",
-		65: "Senior.",
+		0: "Newborn",
+		1: "Infant",
+		2: "Toddler",
+		4: "Child",
+		13: "Teenager",
+		20: "Young Adult",
+		40: "Adult",
+		65: "Senior",
 	};
 
 	var milestone = "Unknown";
@@ -34,6 +34,12 @@ function getMilestone(age) {
 
 	return milestone;
 }
+
+function showMilestones(years) {
+	var milestoneClass = ".milestone-" + getMilestone(years);
+	document.querySelector(milestoneClass).style.display = "block";
+}
+
 
 function animateNumber(targetNumber, duration) {
 	const startingNumber = 0;
@@ -63,23 +69,6 @@ function animateNumber(targetNumber, duration) {
 	requestAnimationFrame(updateNumber);
 }
 
-/*
-function animateAge(ageInDays) {
-	let count = 0;
-	const duration = 2000; // Animation duration in milliseconds
-	const base = 2; // Exponential base
-  
-	const timer = setInterval(() => {
-		if (count >= ageInDays) {
-			clearInterval(timer);
-			return;
-		}
-		count = Math.pow(base, count);
-		document.getElementById('resultDays').textContent = count;
-	}, duration / ageInDays);
-}
-*/
-
 function printResults(years, months, days, ageInDays) {
 	document.getElementById("result").innerHTML =
 		"Your age is " +
@@ -93,14 +82,14 @@ function printResults(years, months, days, ageInDays) {
 	showElement("ageResult");
 	document.getElementById("milestones").innerHTML =
 		"Your milestone is: " + getMilestone(years);
-	
+
 }
 
 function showElement(elementId) {
-  var element = document.getElementById(elementId);
-  if (element) {
-    element.style.display = "block";
-  }
+	var element = document.getElementById(elementId);
+	if (element) {
+		element.style.display = "block";
+	}
 }
 
 function calculateAge() {
@@ -136,6 +125,7 @@ function calculateAge() {
 
 	printResults(years, months, days, ageInDays);
 	animateNumber("ageResultDays", 3000);
+	showMilestones(years);
 }
 
 document.querySelector("form").addEventListener("submit", function (event) {
