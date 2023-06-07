@@ -22,21 +22,22 @@ function getMilestone(age) {
 		65: "Senior",
 	};
 
-	var milestone = "Unknown";
 	var keys = Object.keys(milestoneRanges);
 
 	for (var i = 0; i < keys.length; i++) {
 		if (age < keys[i]) {
 			break;
 		}
-		milestone = milestoneRanges[keys[i]];
+		var milestone = {
+			key: keys[i],
+			name: milestoneRanges[keys[i]]
+		};
 	}
-
 	return milestone;
 }
 
 function showMilestones(years) {
-	var milestoneClass = ".milestone-" + getMilestone(years);
+	var milestoneClass = ".milestone-" + getMilestone(years).key;
 	document.querySelector(milestoneClass).style.display = "block";
 }
 
@@ -81,7 +82,7 @@ function printResults(years, months, days, ageInDays) {
 	document.getElementById("ageResultDays").innerHTML = ageInDays;
 	showElement("ageResult");
 	document.getElementById("milestones").innerHTML =
-		"Your milestone is: " + getMilestone(years);
+		"Your milestone is: " + getMilestone(years).name;
 
 }
 
@@ -91,6 +92,32 @@ function showElement(elementId) {
 		element.style.display = "block";
 	}
 }
+
+const birthdateInput = document.getElementById("birthdate");
+const milestonesContainer = document.getElementById("milestones");
+
+function hideMilestones() {
+  const milestones = document.querySelectorAll(".milestones-ranges");
+  milestones.forEach((milestone) => {
+    milestone.style.display = "none";
+  });
+}
+
+function updateMilestones() {
+  hideMilestones();
+
+  const birthdate = new Date(birthdateInput.value);
+  const years = new Date().getFullYear() - birthdate.getFullYear();
+  const milestone = getMilestone(years);
+  const milestoneClass = ".milestone-" + milestone.key;
+
+  document.querySelector(milestoneClass).style.display = "block";
+  milestonesContainer.textContent = "Your milestone is: " + milestone.name;
+}
+
+//birthdateInput.addEventListener("change", updateMilestones);
+
+
 
 function calculateAge() {
 	var birthdate = new Date(document.getElementById("birthdate").value);
@@ -126,6 +153,7 @@ function calculateAge() {
 	printResults(years, months, days, ageInDays);
 	animateNumber("ageResultDays", 3000);
 	showMilestones(years);
+	updateMilestones();
 }
 
 document.querySelector("form").addEventListener("submit", function (event) {
