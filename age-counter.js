@@ -79,11 +79,15 @@ function printResults(years, months, days, ageInDays) {
 		" months, and " +
 		days +
 		" days.";
-	document.getElementById("ageResultDays").innerHTML = ageInDays;
-	showElement("ageResult");
+	
+		document.getElementById("ageResultDays").innerHTML = ageInDays;
+	
+	
 	document.getElementById("milestones").innerHTML =
 		"Your milestone is: " + getMilestone(years).name;
-
+	showElement("result");
+	showElement("milestones");
+	showElement("ageResult");
 }
 
 function showElement(elementId) {
@@ -96,15 +100,20 @@ function showElement(elementId) {
 const birthdateInput = document.getElementById("birthdate");
 const milestonesContainer = document.getElementById("milestones");
 
-function hideMilestones() {
-  const milestones = document.querySelectorAll(".milestones-ranges");
-  milestones.forEach((milestone) => {
-    milestone.style.display = "none";
-  });
+function hide(Name, classOrID) {
+  if (classOrID == "class") {
+		const classes = document.querySelectorAll("." + Name);
+		classes.forEach((classElement) => {
+			classElement.style.display = "none";
+		});
+	} else if (classOrID == "id") {
+		const element = document.getElementById(Name);
+		element.style.display = "none";
+	} 
 }
 
 function updateMilestones() {
-  hideMilestones();
+  hide("milestones-ranges", "class");
 
   const birthdate = new Date(birthdateInput.value);
   const years = new Date().getFullYear() - birthdate.getFullYear();
@@ -114,10 +123,6 @@ function updateMilestones() {
   document.querySelector(milestoneClass).style.display = "block";
   milestonesContainer.textContent = "Your milestone is: " + milestone.name;
 }
-
-//birthdateInput.addEventListener("change", updateMilestones);
-
-
 
 function calculateAge() {
 	var birthdate = new Date(document.getElementById("birthdate").value);
@@ -149,11 +154,34 @@ function calculateAge() {
 	// Calculate the age in days by considering varying month lengths
 	var ageInDays = calculateDays(birthdate, now);
 
+	console.log(ageInDays);
 
-	printResults(years, months, days, ageInDays);
-	animateNumber("ageResultDays", 3000);
-	showMilestones(years);
-	updateMilestones();
+	if (ageInDays < 0) {
+		printError("future");
+	} else if (ageInDays == 0) {
+		printError("bday");
+	} else {
+		printResults(years, months, days, ageInDays);
+		animateNumber("ageResultDays", 3000);
+		showMilestones(years);
+		updateMilestones();
+		hide("errors", "class");
+	}
+}
+
+function printError(input) {
+	const errors = document.querySelector(".errors");
+
+	if (input == "future") {
+		errors.innerHTML = "I believe that date is in future.";
+	} else if (input == "bday") {
+		errors.innerHTML = "Congratulations, today is your birthday!";
+	}
+	errors.style.display = "block";
+	hide("milestones-ranges", "class");
+	hide("result", "id");
+	hide("ageResult", "id");
+	hide("milestones", "id");
 }
 
 document.querySelector("form").addEventListener("submit", function (event) {
