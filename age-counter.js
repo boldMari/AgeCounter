@@ -71,14 +71,30 @@ function animateNumber(targetNumber, duration) {
 }
 
 function printResults(years, months, days, ageInDays) {
+	
+	if(years == 1) {
+		yearLabel = "year";
+	} else {
+		yearLabel = "years";
+	}
+
+	if(months == 1) {
+		monthLabel = "month";
+	} else {
+		monthLabel = "months";
+	}
+
+	if(days == 1) {
+		dayLabel = "day";
+	} else {
+		dayLabel = "days";
+	}
+
 	document.getElementById("result").innerHTML =
 		"Your age is " +
-		years +
-		" years, " +
-		months +
-		" months, and " +
-		days +
-		" days.";
+		years + " " + yearLabel + " " +
+		months + " " + monthLabel + " " +
+		days + " " + dayLabel;
 	
 		document.getElementById("ageResultDays").innerHTML = ageInDays;
 	
